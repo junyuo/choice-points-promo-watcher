@@ -1,29 +1,33 @@
 {
   "alerts": [],
-  "checked_at": "2026-06-29T05:57:56+00:00",
+  "checked_at": "2026-06-29T06:08:40+00:00",
   "detected_count": 0,
   "new_alert_count": 0,
   "source_status": [
     {
-      "error": "failed after 3 retries: HTTPSConnectionPool(host='www.choicehotels.com', port=443): Read timed out. (read timeout=30)",
-      "status": "failed",
-      "text_length": 0,
+      "error": null,
+      "fetch_method": "playwright",
+      "status": "success",
+      "text_length": 230,
       "url": "https://www.choicehotels.com/choice-privileges/buy-points"
     },
     {
       "error": "failed after 3 retries: 403 Client Error: Forbidden for url: https://loyaltylobby.com/?s=Choice+Privileges+Buy+Points",
+      "fetch_method": "requests",
       "status": "failed",
       "text_length": 0,
       "url": "https://loyaltylobby.com/?s=Choice+Privileges+Buy+Points"
     },
     {
       "error": null,
+      "fetch_method": "requests",
       "status": "success",
       "text_length": 4222,
       "url": "https://onemileatatime.com/?s=Choice+Privileges+points"
     },
     {
       "error": null,
+      "fetch_method": "requests",
       "status": "success",
       "text_length": 9410,
       "url": "https://frequentmiler.com/?s=Choice+Privileges+buy+points"
