@@ -17,13 +17,22 @@ LAST_SEEN_FILE = Path("data/last_seen.json")
 ERRORS_FILE = Path("data/errors.json")
 LATEST_ALERT_FILE = Path("alerts/latest-alert.json")
 
-TIMEOUT_SECONDS = 10
+TIMEOUT_SECONDS = 20
+CHOICE_TIMEOUT_SECONDS = 30
 MAX_RETRIES = 3
+RETRY_DELAYS_SECONDS = [2, 5, 10]
 
 USER_AGENT = (
-    "choice-points-promo-watcher/0.1 "
-    "(https://github.com/; checks public promotion pages)"
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/126.0.0.0 Safari/537.36"
 )
+REQUEST_HEADERS = {
+    "User-Agent": USER_AGENT,
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Cache-Control": "no-cache",
+}
 
 
 def utc_now() -> str:
@@ -63,20 +72,20 @@ def write_json_if_changed(path: Path, data: Any) -> None:
 
 
 def fetch_html(url: str) -> str:
-    headers = {"User-Agent": USER_AGENT}
+    timeout = CHOICE_TIMEOUT_SECONDS if is_official_buy_points_url(url) else TIMEOUT_SECONDS
     last_error: Exception | None = None
 
-    for attempt in range(1, MAX_RETRIES + 1):
+    for attempt in range(MAX_RETRIES + 1):
         try:
-            response = requests.get(url, headers=headers, timeout=TIMEOUT_SECONDS)
+            response = requests.get(url, headers=REQUEST_HEADERS, timeout=timeout)
             response.raise_for_status()
             return response.text
         except requests.RequestException as error:
             last_error = error
             if attempt < MAX_RETRIES:
-                time.sleep(attempt)
+                time.sleep(RETRY_DELAYS_SECONDS[attempt])
 
-    raise RuntimeError(f"failed after {MAX_RETRIES} attempts: {last_error}")
+    raise RuntimeError(f"failed after {MAX_RETRIES} retries: {last_error}")
 
 
 def html_to_text(html: str) -> str:
@@ -390,11 +399,20 @@ def main() -> int:
     new_alerts: list[dict[str, Any]] = []
     all_detected: list[dict[str, Any]] = []
     errors: list[dict[str, str]] = []
+    source_status: list[dict[str, Any]] = []
 
     for url in sources:
         try:
             html = fetch_html(url)
             text = html_to_text(html)
+            source_status.append(
+                {
+                    "url": url,
+                    "status": "success",
+                    "error": None,
+                    "text_length": len(text),
+                }
+            )
             alert = detect_alert(url, text)
             if alert is None:
                 continue
@@ -417,10 +435,19 @@ def main() -> int:
                     "discount_percent": alert["discount_percent"],
                 }
         except Exception as error:
+            error_message = str(error)
             errors.append(
                 {
                     "url": url,
-                    "error": str(error),
+                    "error": error_message,
+                }
+            )
+            source_status.append(
+                {
+                    "url": url,
+                    "status": "failed",
+                    "error": error_message,
+                    "text_length": 0,
                 }
             )
 
@@ -430,10 +457,11 @@ def main() -> int:
         "detected_count": len(all_detected),
         "alerts": new_alerts,
         "validation_note": None,
+        "source_status": source_status,
     }
     if not all_detected:
         latest_alert["validation_note"] = (
-            "No validated Choice Privileges buy-points promotion found."
+            "No validated Choice Privileges buy-points promotion found from successfully fetched sources."
         )
 
     if new_alerts:
