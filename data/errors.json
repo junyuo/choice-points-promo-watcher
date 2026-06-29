@@ -1,0 +1,12 @@
+{
+  "errors": [
+    {
+      "error": "failed after 3 attempts: HTTPSConnectionPool(host='www.choicehotels.com', port=443): Read timed out. (read timeout=10)",
+      "url": "https://www.choicehotels.com/choice-privileges/buy-points"
+    },
+    {
+      "error": "failed after 3 attempts: 403 Client Error: Forbidden for url: https://loyaltylobby.com/?s=Choice+Privileges+Buy+Points",
+      "url": "https://loyaltylobby.com/?s=Choice+Privileges+Buy+Points"
+    }
+  ]
+}

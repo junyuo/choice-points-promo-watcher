@@ -1,3 +1,19 @@
 {
-  "fingerprints": {}
+  "fingerprints": {
+    "c9091e01956b3771454d2dbd9393d9a5ca09ea52dec87fd4d453879818230330": {
+      "bonus_percent": 100,
+      "discount_percent": null,
+      "first_seen_at": "2026-06-29T05:30:24+00:00",
+      "priority": "critical",
+      "url": "https://onemileatatime.com/?s=Choice+Privileges+points"
+    },
+    "e060f491fcceed33e6a15fda9b0718563c1158a5b1b69bcc1c34a3053b6ce382": {
+      "bonus_percent": 50,
+      "discount_percent": 50,
+      "first_seen_at": "2026-06-29T05:30:24+00:00",
+      "priority": "critical",
+      "url": "https://frequentmiler.com/?s=Choice+Privileges+buy+points"
+    }
+  },
+  "updated_at": "2026-06-29T05:30:24+00:00"
 }

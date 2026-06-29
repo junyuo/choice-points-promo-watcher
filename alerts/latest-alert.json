@@ -1,5 +1,25 @@
 {
-  "alerts": [],
-  "detected_count": 0,
-  "new_alert_count": 0
+  "alerts": [
+    {
+      "bonus_percent": 100,
+      "detected_at": "2026-06-29T05:30:24+00:00",
+      "discount_percent": null,
+      "fingerprint": "c9091e01956b3771454d2dbd9393d9a5ca09ea52dec87fd4d453879818230330",
+      "priority": "critical",
+      "snippet": "Choice Privileges points",
+      "url": "https://onemileatatime.com/?s=Choice+Privileges+points"
+    },
+    {
+      "bonus_percent": 50,
+      "detected_at": "2026-06-29T05:30:24+00:00",
+      "discount_percent": 50,
+      "fingerprint": "e060f491fcceed33e6a15fda9b0718563c1158a5b1b69bcc1c34a3053b6ce382",
+      "priority": "critical",
+      "snippet": "Choice Privileges buy points - Frequent Miler back to top Facebook Instagram RSS Twitter Beginner’s Guide Best Credit Card Offers Best Off",
+      "url": "https://frequentmiler.com/?s=Choice+Privileges+buy+points"
+    }
+  ],
+  "checked_at": "2026-06-29T05:30:24+00:00",
+  "detected_count": 2,
+  "new_alert_count": 2
 }
