@@ -92,17 +92,42 @@ def normalize_text(text: str) -> str:
 
 def has_deadline(text: str) -> bool:
     lower_text = text.lower()
-    return any(term in lower_text for term in ["through", "ends", "until", "offer ends"])
+    return any(
+        term in lower_text
+        for term in [
+            "through",
+            "ends",
+            "until",
+            "offer ends",
+            "only until",
+            "valid until",
+            "ends in",
+            "offer ends in",
+        ]
+    )
 
 
 def has_points_purchase(text: str) -> bool:
     lower_text = text.lower()
-    return "buy points" in lower_text or "purchase points" in lower_text
+    return (
+        "buy points" in lower_text
+        or "purchase points" in lower_text
+        or "get more points" in lower_text
+        or "more points with your purchase" in lower_text
+        or re.search(r"buy\s+[\d,]+\+?\s+points", lower_text) is not None
+    )
 
 
 def has_offer_term(text: str) -> bool:
     lower_text = text.lower()
-    return "bonus" in lower_text or "discount" in lower_text or "% off" in lower_text
+    return (
+        "bonus" in lower_text
+        or "discount" in lower_text
+        or "% off" in lower_text
+        or "more points" in lower_text
+        or re.search(r"\d{1,3}%\s+more\s+points", lower_text) is not None
+        or re.search(r"get\s+\d{1,3}%\s+more", lower_text) is not None
+    )
 
 
 def has_percent(text: str) -> bool:
@@ -122,7 +147,16 @@ def context_has_percent_offer(text: str, offer_terms: list[str]) -> bool:
 
 def keyword_distance_score(text: str, position: int) -> int:
     lower_text = text.lower()
-    keywords = ["choice privileges", "buy points", "purchase points", "bonus", "discount"]
+    keywords = [
+        "choice privileges",
+        "buy points",
+        "purchase points",
+        "get more points",
+        "more points with your purchase",
+        "bonus",
+        "discount",
+        "more",
+    ]
     distances = [
         abs(match.start() - position)
         for keyword in keywords
@@ -156,7 +190,7 @@ def extract_contextual_percent(text: str, offer_terms: list[str]) -> int | None:
 
 
 def extract_bonus_percent(text: str) -> int | None:
-    return extract_contextual_percent(text, ["bonus"])
+    return extract_contextual_percent(text, ["bonus", "more"])
 
 
 def extract_discount_percent(text: str) -> int | None:
@@ -180,8 +214,8 @@ def find_snippet(text: str) -> str:
     snippet_candidates: list[tuple[int, int, str]] = []
 
     for match in re.finditer(r"\d{1,3}\s*%", normalized):
-        start = max(0, match.start() - 180)
-        end = min(len(normalized), match.end() + 180)
+        start = max(0, match.start() - 220)
+        end = min(len(normalized), match.end() + 220)
         snippet = normalized[start:end].strip()
         lower_snippet = snippet.lower()
         score = 0
@@ -197,14 +231,18 @@ def find_snippet(text: str) -> str:
 
     if snippet_candidates:
         snippet_candidates.sort()
-        return snippet_candidates[0][2][:360]
+        return snippet_candidates[0][2][:460]
 
     match = re.search(
         r"choice privileges.{0,300}(?:bonus|discount|off|buy points|purchase points)",
         normalized,
         flags=re.IGNORECASE,
     )
-    return match.group(0)[:360] if match else normalized[:360]
+    return match.group(0)[:460] if match else normalized[:460]
+
+
+def is_official_buy_points_url(url: str) -> bool:
+    return "choicehotels.com/choice-privileges/buy-points" in url.lower()
 
 
 def validate_promo(alert: dict[str, Any], page_text: str, url: str) -> dict[str, Any]:
@@ -214,10 +252,14 @@ def validate_promo(alert: dict[str, Any], page_text: str, url: str) -> dict[str,
     snippet = alert.get("snippet") or ""
     lower_snippet = snippet.lower()
     is_search_page = "?s=" in url
+    is_official_page = is_official_buy_points_url(url)
 
-    if "choice privileges" in lower_text:
+    if "choice privileges" in lower_text or is_official_page:
         confidence += 20
-        reasons.append("Page contains Choice Privileges.")
+        if is_official_page and "choice privileges" not in lower_text:
+            reasons.append("Official Choice buy-points URL supplies Choice Privileges context.")
+        else:
+            reasons.append("Page contains Choice Privileges.")
     else:
         reasons.append("Missing Choice Privileges on page.")
 
@@ -228,7 +270,9 @@ def validate_promo(alert: dict[str, Any], page_text: str, url: str) -> dict[str,
         reasons.append("Missing buy points or purchase points on page.")
 
     percent_context_valid = False
-    if alert.get("bonus_percent") is not None and context_has_percent_offer(page_text, ["bonus"]):
+    if alert.get("bonus_percent") is not None and context_has_percent_offer(
+        page_text, ["bonus", "more"]
+    ):
         percent_context_valid = True
     if alert.get("discount_percent") is not None and context_has_percent_offer(
         page_text, ["discount", "off"]
@@ -237,9 +281,9 @@ def validate_promo(alert: dict[str, Any], page_text: str, url: str) -> dict[str,
 
     if percent_context_valid:
         confidence += 20
-        reasons.append("Percentage appears near bonus, discount, or off.")
+        reasons.append("Percentage appears near bonus, more, discount, or off.")
     else:
-        reasons.append("No percentage appears near bonus, discount, or off.")
+        reasons.append("No percentage appears near bonus, more, discount, or off.")
 
     if has_offer_term(page_text):
         reasons.append("Page contains bonus, discount, or % off.")
@@ -257,22 +301,33 @@ def validate_promo(alert: dict[str, Any], page_text: str, url: str) -> dict[str,
     snippet_has_offer = has_offer_term(snippet)
     snippet_has_deadline = has_deadline(snippet)
     snippet_has_percent = has_percent(snippet)
-    snippet_valid = (
-        snippet_has_choice
-        and snippet_has_points
-        and snippet_has_offer
-        and snippet_has_deadline
-        and snippet_has_percent
-    )
+    if is_official_page:
+        snippet_valid = (
+            "points" in lower_snippet
+            and snippet_has_offer
+            and snippet_has_deadline
+            and snippet_has_percent
+        )
+    else:
+        snippet_valid = (
+            snippet_has_choice
+            and snippet_has_points
+            and snippet_has_offer
+            and snippet_has_deadline
+            and snippet_has_percent
+        )
 
     if snippet_valid:
         confidence += 20
-        reasons.append("Snippet contains promotion name, percentage, and deadline.")
+        if is_official_page:
+            reasons.append("Official buy-points snippet contains points, percentage, offer terms, and deadline.")
+        else:
+            reasons.append("Snippet contains promotion name, percentage, and deadline.")
     else:
         reasons.append("Snippet does not contain promotion name, percentage, and deadline.")
 
     required_page_terms = (
-        "choice privileges" in lower_text
+        ("choice privileges" in lower_text or is_official_page)
         and has_points_purchase(page_text)
         and has_offer_term(page_text)
         and has_deadline(page_text)
@@ -296,7 +351,7 @@ def validate_promo(alert: dict[str, Any], page_text: str, url: str) -> dict[str,
 
 def detect_alert(url: str, text: str) -> dict[str, Any] | None:
     lower_text = text.lower()
-    has_choice = "choice privileges" in lower_text
+    has_choice = "choice privileges" in lower_text or is_official_buy_points_url(url)
     has_points = has_points_purchase(text) or "points" in lower_text
     has_offer = has_offer_term(text) or re.search(r"\boff\b", lower_text)
 
@@ -374,6 +429,7 @@ def main() -> int:
         "new_alert_count": len(new_alerts),
         "detected_count": len(all_detected),
         "alerts": new_alerts,
+        "validation_note": None,
     }
     if not all_detected:
         latest_alert["validation_note"] = (
