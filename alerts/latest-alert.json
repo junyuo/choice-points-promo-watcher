@@ -1,6 +1,6 @@
 {
   "alerts": [],
-  "checked_at": "2026-06-29T06:39:34+00:00",
+  "checked_at": "2026-06-29T11:18:32+00:00",
   "detected_count": 0,
   "new_alert_count": 0,
   "source_status": [
@@ -8,7 +8,7 @@
       "error": "Access Denied",
       "fetch_method": "playwright",
       "status": "blocked",
-      "text_length": 230,
+      "text_length": 228,
       "url": "https://www.choicehotels.com/choice-privileges/buy-points"
     },
     {
@@ -71,42 +71,42 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 10363,
+      "text_length": 10364,
       "url": "https://onemileatatime.com/news/choice-privileges-points-preferred-hotels/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 13798,
+      "text_length": 13805,
       "url": "https://onemileatatime.com/deals/buy-choice-privileges-points/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 7505,
+      "text_length": 7512,
       "url": "https://onemileatatime.com/deals/choice-privileges-promotion/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 9376,
+      "text_length": 9342,
       "url": "https://onemileatatime.com/news/citi-thankyou-devalues-hotel-points-transfers/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 11048,
+      "text_length": 11053,
       "url": "https://onemileatatime.com/deals/transfer-choice-privileges-points-flying-blue-bonus/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 14225,
+      "text_length": 14224,
       "url": "https://onemileatatime.com/news/choice-radisson-americas-programs-merge/"
     },
     {
@@ -120,14 +120,14 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 13669,
+      "text_length": 13659,
       "url": "https://onemileatatime.com/news/choice-radisson-points-transfers/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 9192,
+      "text_length": 9203,
       "url": "https://onemileatatime.com/news/capital-one-choice-privileges/"
     },
     {
