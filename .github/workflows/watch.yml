@@ -1,0 +1,40 @@
+name: Watch Choice Points Promos
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run watcher
+        run: python watcher.py
+
+      - name: Commit updates
+        run: |
+          if [ -n "$(git status --short data alerts)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data alerts
+            git commit -m "Update promo watcher data"
+            git push
+          else
+            echo "No data or alert updates."
+          fi
