@@ -10,6 +10,7 @@ from typing import Any
 import requests
 import yaml
 from bs4 import BeautifulSoup
+from playwright.sync_api import sync_playwright
 
 
 SOURCES_FILE = Path("sources.yaml")
@@ -19,6 +20,7 @@ LATEST_ALERT_FILE = Path("alerts/latest-alert.json")
 
 TIMEOUT_SECONDS = 20
 CHOICE_TIMEOUT_SECONDS = 30
+PLAYWRIGHT_TIMEOUT_SECONDS = 25
 MAX_RETRIES = 3
 RETRY_DELAYS_SECONDS = [2, 5, 10]
 
@@ -86,6 +88,26 @@ def fetch_html(url: str) -> str:
                 time.sleep(RETRY_DELAYS_SECONDS[attempt])
 
     raise RuntimeError(f"failed after {MAX_RETRIES} retries: {last_error}")
+
+
+def fetch_with_playwright(url: str) -> str:
+    deadline = time.monotonic() + PLAYWRIGHT_TIMEOUT_SECONDS
+    timeout_ms = PLAYWRIGHT_TIMEOUT_SECONDS * 1000
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        try:
+            page = browser.new_page(user_agent=USER_AGENT)
+            page.set_default_timeout(timeout_ms)
+            page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+
+            remaining_ms = max(1, int((deadline - time.monotonic()) * 1000))
+            page.wait_for_load_state("load", timeout=remaining_ms)
+
+            remaining_ms = max(1, int((deadline - time.monotonic()) * 1000))
+            return page.locator("body").inner_text(timeout=remaining_ms)
+        finally:
+            browser.close()
 
 
 def html_to_text(html: str) -> str:
@@ -403,12 +425,30 @@ def main() -> int:
 
     for url in sources:
         try:
-            html = fetch_html(url)
-            text = html_to_text(html)
+            fetch_method = "requests"
+            try:
+                html = fetch_html(url)
+                text = html_to_text(html)
+            except Exception as request_error:
+                if not is_official_buy_points_url(url):
+                    raise
+                fetch_method = "playwright"
+                try:
+                    text = fetch_with_playwright(url)
+                except Exception as playwright_error:
+                    raise RuntimeError(
+                        f"requests failed: {request_error}; playwright failed: {playwright_error}"
+                    ) from playwright_error
+
+            if is_official_buy_points_url(url) and fetch_method == "requests" and len(text) < 1000:
+                fetch_method = "playwright"
+                text = fetch_with_playwright(url)
+
             source_status.append(
                 {
                     "url": url,
                     "status": "success",
+                    "fetch_method": fetch_method,
                     "error": None,
                     "text_length": len(text),
                 }
@@ -446,6 +486,9 @@ def main() -> int:
                 {
                     "url": url,
                     "status": "failed",
+                    "fetch_method": (
+                        "playwright" if is_official_buy_points_url(url) else "requests"
+                    ),
                     "error": error_message,
                     "text_length": 0,
                 }
