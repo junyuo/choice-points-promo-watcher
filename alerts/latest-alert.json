@@ -1,13 +1,13 @@
 {
   "alerts": [],
-  "checked_at": "2026-06-29T06:30:07+00:00",
+  "checked_at": "2026-06-29T06:39:34+00:00",
   "detected_count": 0,
   "new_alert_count": 0,
   "source_status": [
     {
-      "error": null,
+      "error": "Access Denied",
       "fetch_method": "playwright",
-      "status": "success",
+      "status": "blocked",
       "text_length": 230,
       "url": "https://www.choicehotels.com/choice-privileges/buy-points"
     },
@@ -29,8 +29,211 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
+      "text_length": 42244,
+      "url": "https://onemileatatime.com/best-credit-cards/everyday-spending/bonus-offers/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 4208,
+      "url": "https://onemileatatime.com/?s=Choice Privileges points&format=news"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 4227,
+      "url": "https://onemileatatime.com/?s=Choice Privileges points&format=guides"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 4182,
+      "url": "https://onemileatatime.com/?s=Choice Privileges points&format=deals"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 3803,
+      "url": "https://onemileatatime.com/?s=Choice Privileges points&format=insights"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 3895,
+      "url": "https://onemileatatime.com/?s=Choice Privileges points&format=reviews"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 10363,
+      "url": "https://onemileatatime.com/news/choice-privileges-points-preferred-hotels/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 13798,
+      "url": "https://onemileatatime.com/deals/buy-choice-privileges-points/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 7505,
+      "url": "https://onemileatatime.com/deals/choice-privileges-promotion/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 9376,
+      "url": "https://onemileatatime.com/news/citi-thankyou-devalues-hotel-points-transfers/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 11048,
+      "url": "https://onemileatatime.com/deals/transfer-choice-privileges-points-flying-blue-bonus/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 14225,
+      "url": "https://onemileatatime.com/news/choice-radisson-americas-programs-merge/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 14687,
+      "url": "https://onemileatatime.com/choice-privileges-blocking-award-nights/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 13669,
+      "url": "https://onemileatatime.com/news/choice-radisson-points-transfers/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 9192,
+      "url": "https://onemileatatime.com/news/capital-one-choice-privileges/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
       "text_length": 9410,
       "url": "https://frequentmiler.com/?s=Choice+Privileges+buy+points"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 32380,
+      "url": "https://frequentmiler.com/choice-privileges-complete-guide/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 66786,
+      "url": "https://frequentmiler.com/current-point-transfer-bonuses/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 193314,
+      "url": "https://frequentmiler.com/best-credit-card-category-bonuses/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 257700,
+      "url": "https://frequentmiler.com/best-big-spend-bonuses/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 20540,
+      "url": "https://frequentmiler.com/resources/#credit-card-bonuses"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 16752,
+      "url": "https://frequentmiler.com/choice-privileges-points-sale-get-up-to-50-off-buy-points-for-0-52cpp/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 16752,
+      "url": "https://frequentmiler.com/choice-privileges-points-sale-get-up-to-50-off-buy-points-for-0-52cpp/#comments"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 9836,
+      "url": "https://frequentmiler.com/buy-choice-privileges-points-for-0-74cpp-40-bonus/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 9836,
+      "url": "https://frequentmiler.com/buy-choice-privileges-points-for-0-74cpp-40-bonus/#comments"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 8807,
+      "url": "https://frequentmiler.com/buy-choice-privileges-points-55k-for-265-back-in-stock/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 11209,
+      "url": "https://frequentmiler.com/choice-privileges-points-sale/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 11402,
+      "url": "https://frequentmiler.com/choice-privileges-pros-and-cons-coffee-break-ep95-3-3-26/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 32594,
+      "url": "https://frequentmiler.com/master-list-of-quarterly-bonus-categories-for-freedom-discover-cash-dividend-aboc/"
+    },
+    {
+      "error": null,
+      "fetch_method": "requests",
+      "status": "success",
+      "text_length": 66786,
+      "url": "https://frequentmiler.boardingarea.com/current-point-transfer-bonuses/"
     }
   ],
   "validation_note": "No validated Choice Privileges buy-points promotion found from successfully fetched sources."
