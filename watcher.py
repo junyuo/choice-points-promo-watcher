@@ -1,11 +1,13 @@
 import hashlib
 import json
+import os
 import re
 import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 import requests
 import yaml
@@ -17,6 +19,7 @@ SOURCES_FILE = Path("sources.yaml")
 LAST_SEEN_FILE = Path("data/last_seen.json")
 ERRORS_FILE = Path("data/errors.json")
 LATEST_ALERT_FILE = Path("alerts/latest-alert.json")
+DEBUG_DIR = Path("data/debug")
 
 TIMEOUT_SECONDS = 20
 CHOICE_TIMEOUT_SECONDS = 30
@@ -35,6 +38,37 @@ REQUEST_HEADERS = {
     "Accept-Language": "en-US,en;q=0.9",
     "Cache-Control": "no-cache",
 }
+
+
+def debug_dump_enabled() -> bool:
+    return os.environ.get("DEBUG_DUMP") == "1"
+
+
+def safe_debug_name(url: str) -> str:
+    parsed_url = urlparse(url)
+    host = parsed_url.netloc.lower()
+    if host.startswith("www."):
+        host = host[4:]
+
+    parts = [host]
+    if parsed_url.query:
+        parts.append("search")
+    else:
+        parts.extend(part for part in parsed_url.path.split("/") if part)
+
+    filename = "_".join(parts) or "source"
+    return re.sub(r"[^a-z0-9]+", "_", filename.lower()).strip("_")
+
+
+def write_debug_text(path: Path, text: str) -> None:
+    if not debug_dump_enabled():
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
+def dump_source_text(url: str, text: str) -> None:
+    write_debug_text(DEBUG_DIR / f"{safe_debug_name(url)}.txt", text)
 
 
 def utc_now() -> str:
@@ -105,7 +139,17 @@ def fetch_with_playwright(url: str) -> str:
             page.wait_for_load_state("load", timeout=remaining_ms)
 
             remaining_ms = max(1, int((deadline - time.monotonic()) * 1000))
-            return page.locator("body").inner_text(timeout=remaining_ms)
+            body_text = page.locator("body").inner_text(timeout=remaining_ms)
+
+            if debug_dump_enabled() and is_official_buy_points_url(url):
+                DEBUG_DIR.mkdir(parents=True, exist_ok=True)
+                write_debug_text(DEBUG_DIR / "choicehotels_body_text.txt", body_text)
+                write_debug_text(DEBUG_DIR / "choicehotels_page_title.txt", page.title())
+                write_debug_text(DEBUG_DIR / "choicehotels_url.txt", page.url)
+                if len(body_text) < 1000:
+                    page.screenshot(path=str(DEBUG_DIR / "choicehotels_screenshot.png"))
+
+            return body_text
         finally:
             browser.close()
 
@@ -444,6 +488,7 @@ def main() -> int:
                 fetch_method = "playwright"
                 text = fetch_with_playwright(url)
 
+            dump_source_text(url, text)
             source_status.append(
                 {
                     "url": url,
