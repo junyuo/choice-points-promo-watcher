@@ -7,7 +7,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import unquote, urljoin, urlparse
 
 import requests
 import yaml
@@ -37,6 +37,40 @@ REQUEST_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "en-US,en;q=0.9",
     "Cache-Control": "no-cache",
+}
+ARTICLE_KEYWORDS = [
+    "choice privileges",
+    "choice points",
+    "buy points",
+    "bonus",
+    "discount",
+    "off",
+]
+MONTHS = {
+    "january": 1,
+    "jan": 1,
+    "february": 2,
+    "feb": 2,
+    "march": 3,
+    "mar": 3,
+    "april": 4,
+    "apr": 4,
+    "may": 5,
+    "june": 6,
+    "jun": 6,
+    "july": 7,
+    "jul": 7,
+    "august": 8,
+    "aug": 8,
+    "september": 9,
+    "sep": 9,
+    "sept": 9,
+    "october": 10,
+    "oct": 10,
+    "november": 11,
+    "nov": 11,
+    "december": 12,
+    "dec": 12,
 }
 
 
@@ -69,6 +103,18 @@ def write_debug_text(path: Path, text: str) -> None:
 
 def dump_source_text(url: str, text: str) -> None:
     write_debug_text(DEBUG_DIR / f"{safe_debug_name(url)}.txt", text)
+
+
+def is_access_denied(text: str) -> bool:
+    lower_text = text.lower()
+    return (
+        "access denied" in lower_text
+        or "you don't have permission to access" in lower_text
+    )
+
+
+def is_search_result_url(url: str) -> bool:
+    return "?s=" in url
 
 
 def utc_now() -> str:
@@ -158,6 +204,37 @@ def html_to_text(html: str) -> str:
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
     return soup.get_text(" ", strip=True)
+
+
+def article_keyword_match(text: str) -> bool:
+    lower_text = unquote(text).lower()
+    return any(
+        keyword in lower_text if keyword != "off" else re.search(r"\boff\b", lower_text)
+        for keyword in ARTICLE_KEYWORDS
+    )
+
+
+def extract_article_links(html: str, base_url: str) -> list[dict[str, str]]:
+    soup = BeautifulSoup(html, "html.parser")
+    links: list[dict[str, str]] = []
+    seen_urls: set[str] = set()
+
+    for anchor in soup.find_all("a", href=True):
+        href = str(anchor.get("href") or "").strip()
+        title = anchor.get_text(" ", strip=True)
+        absolute_url = urljoin(base_url, href)
+        parsed_url = urlparse(absolute_url)
+        if parsed_url.scheme not in {"http", "https"}:
+            continue
+
+        candidate_text = f"{title} {absolute_url}"
+        if not article_keyword_match(candidate_text) or absolute_url in seen_urls:
+            continue
+
+        seen_urls.add(absolute_url)
+        links.append({"url": absolute_url, "title": title})
+
+    return links
 
 
 def normalize_text(text: str) -> str:
@@ -423,6 +500,123 @@ def validate_promo(alert: dict[str, Any], page_text: str, url: str) -> dict[str,
     }
 
 
+def contains_expired_marker(text: str) -> bool:
+    return re.search(r"\b(expired|dead)\b", text, flags=re.IGNORECASE) is not None
+
+
+def extract_article_dates(text: str) -> list[datetime]:
+    dates: list[datetime] = []
+    current_year = datetime.now(timezone.utc).year
+    month_pattern = "|".join(MONTHS)
+
+    for match in re.finditer(
+        rf"\b({month_pattern})\.?\s+(\d{{1,2}})(?:,?\s+(\d{{4}}))?\b",
+        text,
+        flags=re.IGNORECASE,
+    ):
+        month = MONTHS[match.group(1).lower().rstrip(".")]
+        day = int(match.group(2))
+        year = int(match.group(3)) if match.group(3) else current_year
+        try:
+            dates.append(datetime(year, month, day, tzinfo=timezone.utc))
+        except ValueError:
+            continue
+
+    for match in re.finditer(
+        rf"\b(\d{{1,2}})\s+({month_pattern})\.?(?:\s+(\d{{4}}))?\b",
+        text,
+        flags=re.IGNORECASE,
+    ):
+        day = int(match.group(1))
+        month = MONTHS[match.group(2).lower().rstrip(".")]
+        year = int(match.group(3)) if match.group(3) else current_year
+        try:
+            dates.append(datetime(year, month, day, tzinfo=timezone.utc))
+        except ValueError:
+            continue
+
+    return dates
+
+
+def validate_article_promo(
+    alert: dict[str, Any], page_text: str, url: str, title: str
+) -> dict[str, Any]:
+    combined_text = f"{title} {page_text}"
+    lower_text = combined_text.lower()
+    reasons: list[str] = []
+    confidence = 0
+
+    has_choice_context = "choice privileges" in lower_text or "choice points" in lower_text
+    has_buy_context = (
+        "buy points" in lower_text
+        or "buying choice points" in lower_text
+        or "purchase points" in lower_text
+    )
+    has_offer_context = (
+        "bonus" in lower_text or "discount" in lower_text or re.search(r"\boff\b", lower_text)
+    )
+    has_expiry_context = any(
+        term in lower_text
+        for term in ["through", "until", "ends", "expires", "valid through"]
+    )
+    expired_marker = contains_expired_marker(combined_text)
+
+    if has_choice_context:
+        confidence += 20
+        reasons.append("Article contains Choice Privileges or Choice points.")
+    else:
+        reasons.append("Article missing Choice Privileges or Choice points.")
+
+    if has_buy_context:
+        confidence += 20
+        reasons.append("Article contains buy points, buying Choice points, or purchase points.")
+    else:
+        reasons.append("Article missing buy-points purchase wording.")
+
+    if has_offer_context:
+        confidence += 20
+        reasons.append("Article contains bonus, discount, or off.")
+    else:
+        reasons.append("Article missing bonus, discount, or off.")
+
+    if has_expiry_context:
+        confidence += 20
+        reasons.append("Article contains through, until, ends, expires, or valid through.")
+    else:
+        reasons.append("Article missing expiry wording.")
+
+    article_dates = extract_article_dates(combined_text)
+    today = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+    has_future_date = any(date >= today for date in article_dates)
+    if article_dates and has_future_date:
+        confidence += 20
+        reasons.append("Article contains a date that has not passed.")
+    elif article_dates:
+        reasons.append("Article dates appear to be expired.")
+    else:
+        confidence = min(confidence, 70)
+        reasons.append("Article date could not be determined; confidence capped at 70.")
+
+    if expired_marker:
+        reasons.append("Article title or content marks the offer expired or dead.")
+
+    is_valid = (
+        has_choice_context
+        and has_buy_context
+        and has_offer_context
+        and has_expiry_context
+        and has_future_date
+        and not expired_marker
+        and confidence >= 80
+    )
+
+    return {
+        "is_valid": is_valid,
+        "confidence": confidence,
+        "validation_reasons": reasons,
+    }
+
+
 def detect_alert(url: str, text: str) -> dict[str, Any] | None:
     lower_text = text.lower()
     has_choice = "choice privileges" in lower_text or is_official_buy_points_url(url)
@@ -483,11 +677,28 @@ def main() -> int:
                         f"requests failed: {request_error}; playwright failed: {playwright_error}"
                     ) from playwright_error
 
-            if is_official_buy_points_url(url) and fetch_method == "requests" and len(text) < 1000:
+            if (
+                is_official_buy_points_url(url)
+                and fetch_method == "requests"
+                and len(text) < 1000
+                and not is_access_denied(text)
+            ):
                 fetch_method = "playwright"
                 text = fetch_with_playwright(url)
 
             dump_source_text(url, text)
+            if is_access_denied(text):
+                source_status.append(
+                    {
+                        "url": url,
+                        "status": "blocked",
+                        "fetch_method": fetch_method,
+                        "error": "Access Denied",
+                        "text_length": len(text),
+                    }
+                )
+                continue
+
             source_status.append(
                 {
                     "url": url,
@@ -497,6 +708,63 @@ def main() -> int:
                     "text_length": len(text),
                 }
             )
+
+            if is_search_result_url(url):
+                for article in extract_article_links(html, url):
+                    article_url = article["url"]
+                    article_title = article["title"]
+                    try:
+                        article_html = fetch_html(article_url)
+                        article_text = html_to_text(article_html)
+                        dump_source_text(article_url, article_text)
+                        article_status = "blocked" if is_access_denied(article_text) else "success"
+                        source_status.append(
+                            {
+                                "url": article_url,
+                                "status": article_status,
+                                "fetch_method": "requests",
+                                "error": "Access Denied" if article_status == "blocked" else None,
+                                "text_length": len(article_text),
+                            }
+                        )
+                        if article_status == "blocked":
+                            continue
+
+                        alert = detect_alert(article_url, article_text)
+                        if alert is None:
+                            continue
+
+                        validation = validate_article_promo(
+                            alert, article_text, article_url, article_title
+                        )
+                        alert.update(validation)
+                        if not alert["is_valid"]:
+                            continue
+
+                        all_detected.append(alert)
+                        fingerprint = alert["fingerprint"]
+                        if fingerprint not in seen_fingerprints:
+                            alert["detected_at"] = checked_at
+                            new_alerts.append(alert)
+                            seen_fingerprints[fingerprint] = {
+                                "url": article_url,
+                                "first_seen_at": checked_at,
+                                "priority": alert["priority"],
+                                "bonus_percent": alert["bonus_percent"],
+                                "discount_percent": alert["discount_percent"],
+                            }
+                    except Exception as article_error:
+                        source_status.append(
+                            {
+                                "url": article_url,
+                                "status": "failed",
+                                "fetch_method": "requests",
+                                "error": str(article_error),
+                                "text_length": 0,
+                            }
+                        )
+                continue
+
             alert = detect_alert(url, text)
             if alert is None:
                 continue
