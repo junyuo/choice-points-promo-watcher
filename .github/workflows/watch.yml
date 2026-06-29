@@ -1,6 +1,12 @@
 name: Watch Choice Points Promos
 
 on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "alerts/**"
+      - "data/**"
   schedule:
     - cron: "0 */6 * * *"
   workflow_dispatch:
