@@ -146,8 +146,7 @@ def fetch_with_playwright(url: str) -> str:
                 write_debug_text(DEBUG_DIR / "choicehotels_body_text.txt", body_text)
                 write_debug_text(DEBUG_DIR / "choicehotels_page_title.txt", page.title())
                 write_debug_text(DEBUG_DIR / "choicehotels_url.txt", page.url)
-                if len(body_text) < 1000:
-                    page.screenshot(path=str(DEBUG_DIR / "choicehotels_screenshot.png"))
+                page.screenshot(path=str(DEBUG_DIR / "choicehotels_screenshot.png"))
 
             return body_text
         finally:

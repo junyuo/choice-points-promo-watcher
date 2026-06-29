@@ -10,6 +10,12 @@ on:
   schedule:
     - cron: "0 */6 * * *"
   workflow_dispatch:
+    inputs:
+      debug_dump:
+        description: "Write fetched text and Playwright debug files to data/debug/"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -34,6 +40,8 @@ jobs:
         run: python -m playwright install --with-deps chromium
 
       - name: Run watcher
+        env:
+          DEBUG_DUMP: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_dump == true && '1' || '0' }}
         run: python watcher.py
 
       - name: Commit updates
