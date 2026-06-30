@@ -1,6 +1,6 @@
 {
   "alerts": [],
-  "checked_at": "2026-06-30T04:16:47+00:00",
+  "checked_at": "2026-06-30T09:55:44+00:00",
   "detected_count": 0,
   "new_alert_count": 0,
   "source_status": [
@@ -22,112 +22,112 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 4235,
+      "text_length": 4212,
       "url": "https://onemileatatime.com/?s=Choice+Privileges+points"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 42257,
+      "text_length": 42234,
       "url": "https://onemileatatime.com/best-credit-cards/everyday-spending/bonus-offers/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 4221,
+      "text_length": 4198,
       "url": "https://onemileatatime.com/?s=Choice Privileges points&format=news"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 4240,
+      "text_length": 4217,
       "url": "https://onemileatatime.com/?s=Choice Privileges points&format=guides"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 4195,
+      "text_length": 4172,
       "url": "https://onemileatatime.com/?s=Choice Privileges points&format=deals"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 3816,
+      "text_length": 3793,
       "url": "https://onemileatatime.com/?s=Choice Privileges points&format=insights"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 3908,
+      "text_length": 3885,
       "url": "https://onemileatatime.com/?s=Choice Privileges points&format=reviews"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 10366,
+      "text_length": 10346,
       "url": "https://onemileatatime.com/news/choice-privileges-points-preferred-hotels/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 13814,
+      "text_length": 13795,
       "url": "https://onemileatatime.com/deals/buy-choice-privileges-points/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 7525,
+      "text_length": 7491,
       "url": "https://onemileatatime.com/deals/choice-privileges-promotion/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 9365,
+      "text_length": 9339,
       "url": "https://onemileatatime.com/news/citi-thankyou-devalues-hotel-points-transfers/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 11063,
+      "text_length": 11035,
       "url": "https://onemileatatime.com/deals/transfer-choice-privileges-points-flying-blue-bonus/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 14248,
+      "text_length": 14217,
       "url": "https://onemileatatime.com/news/choice-radisson-americas-programs-merge/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 14700,
+      "text_length": 14677,
       "url": "https://onemileatatime.com/choice-privileges-blocking-award-nights/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 13678,
+      "text_length": 13657,
       "url": "https://onemileatatime.com/news/choice-radisson-points-transfers/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 9261,
+      "text_length": 9234,
       "url": "https://onemileatatime.com/news/capital-one-choice-privileges/"
     },
     {
