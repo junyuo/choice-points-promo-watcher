@@ -1,6 +1,6 @@
 {
   "alerts": [],
-  "checked_at": "2026-07-01T10:04:50+00:00",
+  "checked_at": "2026-07-01T14:52:53+00:00",
   "detected_count": 0,
   "new_alert_count": 0,
   "source_status": [
@@ -8,7 +8,7 @@
       "error": "Access Denied",
       "fetch_method": "playwright",
       "status": "blocked",
-      "text_length": 230,
+      "text_length": 228,
       "url": "https://www.choicehotels.com/choice-privileges/buy-points"
     },
     {
@@ -71,42 +71,42 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 10357,
+      "text_length": 10356,
       "url": "https://onemileatatime.com/news/choice-privileges-points-preferred-hotels/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 13791,
+      "text_length": 13785,
       "url": "https://onemileatatime.com/deals/buy-choice-privileges-points/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 7491,
+      "text_length": 7494,
       "url": "https://onemileatatime.com/deals/choice-privileges-promotion/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 9370,
+      "text_length": 9346,
       "url": "https://onemileatatime.com/news/citi-thankyou-devalues-hotel-points-transfers/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 11038,
+      "text_length": 11043,
       "url": "https://onemileatatime.com/deals/transfer-choice-privileges-points-flying-blue-bonus/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 14221,
+      "text_length": 14213,
       "url": "https://onemileatatime.com/news/choice-radisson-americas-programs-merge/"
     },
     {
@@ -120,49 +120,49 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 13657,
+      "text_length": 13649,
       "url": "https://onemileatatime.com/news/choice-radisson-points-transfers/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 9195,
+      "text_length": 9218,
       "url": "https://onemileatatime.com/news/capital-one-choice-privileges/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 9410,
+      "text_length": 9438,
       "url": "https://frequentmiler.com/?s=Choice+Privileges+buy+points"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 32380,
+      "text_length": 32408,
       "url": "https://frequentmiler.com/choice-privileges-complete-guide/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 66771,
+      "text_length": 67275,
       "url": "https://frequentmiler.com/current-point-transfer-bonuses/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 193357,
+      "text_length": 193353,
       "url": "https://frequentmiler.com/best-credit-card-category-bonuses/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 257703,
+      "text_length": 257320,
       "url": "https://frequentmiler.com/best-big-spend-bonuses/"
     },
     {
@@ -176,63 +176,56 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 16752,
+      "text_length": 16780,
       "url": "https://frequentmiler.com/choice-privileges-points-sale-get-up-to-50-off-buy-points-for-0-52cpp/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 16752,
+      "text_length": 16780,
       "url": "https://frequentmiler.com/choice-privileges-points-sale-get-up-to-50-off-buy-points-for-0-52cpp/#comments"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 9836,
+      "text_length": 9864,
       "url": "https://frequentmiler.com/buy-choice-privileges-points-for-0-74cpp-40-bonus/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 9836,
+      "text_length": 9864,
       "url": "https://frequentmiler.com/buy-choice-privileges-points-for-0-74cpp-40-bonus/#comments"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 8807,
+      "text_length": 8835,
       "url": "https://frequentmiler.com/buy-choice-privileges-points-55k-for-265-back-in-stock/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 11209,
+      "text_length": 11237,
       "url": "https://frequentmiler.com/choice-privileges-points-sale/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 11379,
+      "text_length": 11407,
       "url": "https://frequentmiler.com/choice-privileges-pros-and-cons-coffee-break-ep95-3-3-26/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 32594,
-      "url": "https://frequentmiler.com/master-list-of-quarterly-bonus-categories-for-freedom-discover-cash-dividend-aboc/"
-    },
-    {
-      "error": null,
-      "fetch_method": "requests",
-      "status": "success",
-      "text_length": 66771,
+      "text_length": 67275,
       "url": "https://frequentmiler.boardingarea.com/current-point-transfer-bonuses/"
     }
   ],
