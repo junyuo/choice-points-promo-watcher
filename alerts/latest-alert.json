@@ -1,6 +1,6 @@
 {
   "alerts": [],
-  "checked_at": "2026-07-01T14:52:53+00:00",
+  "checked_at": "2026-07-01T20:05:48+00:00",
   "detected_count": 0,
   "new_alert_count": 0,
   "source_status": [
@@ -8,7 +8,7 @@
       "error": "Access Denied",
       "fetch_method": "playwright",
       "status": "blocked",
-      "text_length": 228,
+      "text_length": 230,
       "url": "https://www.choicehotels.com/choice-privileges/buy-points"
     },
     {
@@ -29,7 +29,7 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 38504,
+      "text_length": 42057,
       "url": "https://onemileatatime.com/best-credit-cards/everyday-spending/bonus-offers/"
     },
     {
@@ -71,21 +71,21 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 10356,
+      "text_length": 10357,
       "url": "https://onemileatatime.com/news/choice-privileges-points-preferred-hotels/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 13785,
+      "text_length": 13791,
       "url": "https://onemileatatime.com/deals/buy-choice-privileges-points/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 7494,
+      "text_length": 7499,
       "url": "https://onemileatatime.com/deals/choice-privileges-promotion/"
     },
     {
@@ -106,7 +106,7 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 14213,
+      "text_length": 14218,
       "url": "https://onemileatatime.com/news/choice-radisson-americas-programs-merge/"
     },
     {
@@ -127,7 +127,7 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 9218,
+      "text_length": 9235,
       "url": "https://onemileatatime.com/news/capital-one-choice-privileges/"
     },
     {
@@ -148,21 +148,21 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 67275,
+      "text_length": 67289,
       "url": "https://frequentmiler.com/current-point-transfer-bonuses/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 193353,
+      "text_length": 193384,
       "url": "https://frequentmiler.com/best-credit-card-category-bonuses/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 257320,
+      "text_length": 257069,
       "url": "https://frequentmiler.com/best-big-spend-bonuses/"
     },
     {
@@ -225,7 +225,7 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 67275,
+      "text_length": 67289,
       "url": "https://frequentmiler.boardingarea.com/current-point-transfer-bonuses/"
     }
   ],
