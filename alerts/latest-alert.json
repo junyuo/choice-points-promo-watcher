@@ -1,6 +1,6 @@
 {
   "alerts": [],
-  "checked_at": "2026-07-02T04:12:14+00:00",
+  "checked_at": "2026-07-02T09:27:43+00:00",
   "detected_count": 0,
   "new_alert_count": 0,
   "source_status": [
@@ -71,42 +71,42 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 10361,
+      "text_length": 10343,
       "url": "https://onemileatatime.com/news/choice-privileges-points-preferred-hotels/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 13791,
+      "text_length": 13795,
       "url": "https://onemileatatime.com/deals/buy-choice-privileges-points/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 7499,
+      "text_length": 7491,
       "url": "https://onemileatatime.com/deals/choice-privileges-promotion/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 9355,
+      "text_length": 9359,
       "url": "https://onemileatatime.com/news/citi-thankyou-devalues-hotel-points-transfers/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 11035,
+      "text_length": 11032,
       "url": "https://onemileatatime.com/deals/transfer-choice-privileges-points-flying-blue-bonus/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 14207,
+      "text_length": 14215,
       "url": "https://onemileatatime.com/news/choice-radisson-americas-programs-merge/"
     },
     {
@@ -120,14 +120,14 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 13670,
+      "text_length": 13667,
       "url": "https://onemileatatime.com/news/choice-radisson-points-transfers/"
     },
     {
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 9215,
+      "text_length": 9221,
       "url": "https://onemileatatime.com/news/capital-one-choice-privileges/"
     },
     {
@@ -169,7 +169,7 @@
       "error": null,
       "fetch_method": "requests",
       "status": "success",
-      "text_length": 20514,
+      "text_length": 20540,
       "url": "https://frequentmiler.com/resources/#credit-card-bonuses"
     },
     {
